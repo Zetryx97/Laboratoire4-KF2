@@ -42,3 +42,22 @@ class Moteur:
         self.moteur_avd.off()
         self.moteur_ard.off()
         self.control_moteur_d.off()
+
+    def tourner_droite(self,speed):
+        self.moteur_avg.on()
+        self.moteur_arg.off()
+        self.control_moteur_g.on()
+        self.moteur_avd.off()
+        self.moteur_ard.on()
+        self.control_moteur_d.on()
+
+        self.control_moteur_g.value = speed
+        self.control_moteur_d.value = speed
+
+    def tourner_gauche(self,speed):
+        self.moteur_avg.off()
+        self.moteur_arg.on()
+        self.control_moteur_g.on()
+        self.moteur_avd.on()
+        self.moteur_ard.off()
+        self.control_moteur_d.on()
