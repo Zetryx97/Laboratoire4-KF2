@@ -28,7 +28,7 @@ val_min = cv2.getTrackbarPos('Valeur min', titre_fenetre)
 val_max = cv2.getTrackbarPos('Valeur max', titre_fenetre)
 delta = cv2.getTrackbarPos('Delta teinte', titre_fenetre)
 
-print(f"Pour quitter presser la touche 'q'.")
+print(f"Pour quitter appuyer sur la touche 'q'.")
 
 while True:    
     teinte_min = np.array([teinte - delta, sat_min, val_min])
