@@ -50,7 +50,6 @@ class Moteur:
         self.moteur_avd.off()
         self.moteur_ard.on()
         self.control_moteur_d.on()
-
         self.control_moteur_g.value = speed
         self.control_moteur_d.value = speed
 
@@ -61,3 +60,5 @@ class Moteur:
         self.moteur_avd.on()
         self.moteur_ard.off()
         self.control_moteur_d.on()
+        self.control_moteur_g.value = speed
+        self.control_moteur_d.value = speed

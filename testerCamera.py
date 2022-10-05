@@ -33,7 +33,7 @@ class Caméra:
                 break
             #19,120,255,110,255,20
             imgae_hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-            image_binary = cv2.inRange(imgae_hsv, (5, 120, 130), (40, 255, 255))
+            image_binary = cv2.inRange(imgae_hsv, (5, 90, 130), (20, 255, 255))
             contours, _ = cv2.findContours(image_binary, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
             val_plus_grand_contour = 0
             position_plus_grand_contour = 0
@@ -50,7 +50,7 @@ class Caméra:
             elif(position_plus_grand_contour > self.CADRAN_2_MAX):
                 self.moteur.tourner_droite(0.1) 
                 sleep(0.1)
-            elif(self.CADRAN_2_MIN < position_plus_grand_contour < self.CADRAN_2_MAX):
+            elif(self.CADRAN_2_MIN < position_plus_grand_contour and position_plus_grand_contour < self.CADRAN_2_MAX):
                 self.moteur.avancer(0.5)
                 sleep(0.5)
             self.moteur.freiner()
