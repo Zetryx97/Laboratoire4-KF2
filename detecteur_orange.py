@@ -12,6 +12,7 @@ class Detecteur_Orange:
     def __init__(self):
         self.camera = Caméra()
         self.moteur = Moteur()
+        self.AIR_MAXIMUM = 1500
         
     def activer_robot(self):
         th_detecteur_robot = threading.Thread(target=self.camera.detecter_orange)
@@ -22,14 +23,18 @@ class Detecteur_Orange:
     def mouvement(self):
         while self.camera.est_en_marche:
             # Temps d'attente élever pour permettre à la caméra de detecter l'image
-            sleep(3)
-            if self.camera.position_object == 'gauche':
-                self.moteur.tourner_gauche(0.1)
+            sleep(1)
+            if self.camera.air_object > self.AIR_MAXIMUM:
+                self.moteur.freiner()
+            elif self.camera.position_object == 'gauche':
+                self.moteur.tourner_gauche(0.2)
+                sleep(0.3)
             elif self.camera.position_object == 'droite':
-                self.moteur.tourner_droite(0.1)
+                self.moteur.tourner_droite(0.2)
+                sleep(0.3)
             else:
-                self.moteur.avancer(0.5)
-            sleep(0.5)
+                self.moteur.avancer(0.3)
+                sleep(0.5)
             self.moteur.freiner()
 
 

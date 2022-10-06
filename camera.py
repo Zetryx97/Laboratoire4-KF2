@@ -21,42 +21,44 @@ class Caméra:
         self.vcap = cv2.VideoCapture(PORT_CAMERA)
         self.est_en_marche = True
         self.position_object = None
-    
+        self.air_object = 0
+        self.VAL_MIN_HSV = np.array([0,90,115])
+        self.VAL_MAX_HSV = np.array([25,255,255])
+      
     def set_resolution_camera(self):
         self.vcap.set(cv2.CAP_PROP_FRAME_WIDTH,320)
         self.vcap.set(cv2.CAP_PROP_FRAME_HEIGHT,240) 
 
     def detecter_orange(self):
         self.set_resolution_camera()
-        while True:
+        while self.est_en_marche:
             ok,image = self.vcap.read()
             if not ok:
                 print("Erreur avec l'image")
                 break
-            #19,120,255,110,255,20
             imgae_hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-            image_binary = cv2.inRange(imgae_hsv, (19, 120, 110), (20, 255, 255))
+            image_binary = cv2.inRange(imgae_hsv, self.VAL_MIN_HSV, self.VAL_MAX_HSV)
             contours, _ = cv2.findContours(image_binary, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
             val_plus_grand_contour = 0
             position_plus_grand_contour = 0
             for c in contours:
                 x, y, l, h = cv2.boundingRect(c)
                 air_rect = l * h
-                if(air_rect > val_plus_grand_contour):
+                if air_rect > val_plus_grand_contour:
                     val_plus_grand_contour = air_rect
                     position_plus_grand_contour = x
-
-            if(position_plus_grand_contour < self.CADRAN_2_MIN):
+                    self.air_object = air_rect
+                   
+            if position_plus_grand_contour < self.CADRAN_2_MIN:
                 self.position_object = 'gauche'
-            elif(position_plus_grand_contour > self.CADRAN_2_MAX):
+            elif position_plus_grand_contour > self.CADRAN_2_MAX:
                 self.position_object = 'droite'
-            elif(self.CADRAN_2_MIN < position_plus_grand_contour and position_plus_grand_contour < self.CADRAN_2_MAX):
+            elif self.CADRAN_2_MIN < position_plus_grand_contour and position_plus_grand_contour < self.CADRAN_2_MAX:
                 self.position_object = 'millieu'
 
-            image_contour = cv2.drawContours(image_binary, contours, -1, (175, 175, 175), 3)
-            cv2.imshow("Caméra", image_contour)
+            cv2.imshow("Caméra", image_binary)
             choix = cv2.waitKey(33)
-
+            
             if choix == ord('q'):
                 self.est_en_marche = False
                 break 
@@ -64,15 +66,8 @@ class Caméra:
         self.vcap.release()
         cv2.destroyAllWindows()
     
-
-    def convertir_image(self):
-        return None
     
     
 
-if __name__ == "__main__":
-    cam = Caméra()
-
-    cam.detecter_orange()
 
     
